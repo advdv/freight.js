@@ -2,7 +2,7 @@
   "name": "freight.js",
   "version": "0.0.1",
   "description": "An simple CommonJS dependency injection container for both node.js and the browser (using browserify). Loosely based on pimple but with: JSON configuration, service tagging and a perculiar javascript sauce.",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "mocha"
   },
@@ -21,7 +21,14 @@
   "bugs": {
     "url": "https://github.com/advanderveer/freight.js/issues"
   },
-  "dependencies": {
-    "when": "~2.6.0"
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-uglify": "~0.2.7",
+    "grunt-contrib-jshint": "~0.7.1",
+    "browserify": "~2.35.2",
+    "grunt-browserify": "~1.2.11",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-simple-mocha": "~0.4.0"
   }
 }
