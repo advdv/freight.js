@@ -1,0 +1,27 @@
+{
+  "name": "freight.js",
+  "version": "0.0.1",
+  "description": "An simple CommonJS dependency injection container for both node.js and the browser (using browserify). Loosely based on pimple but with: JSON configuration, service tagging and a perculiar javascript sauce.",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/advanderveer/freight.js.git"
+  },
+  "keywords": [
+    "Dependency",
+    "Injection",
+    "Container",
+    "IoC"
+  ],
+  "author": "Ad van der Veer <advanderveer@gmail.com>",
+  "license": "Apache License",
+  "bugs": {
+    "url": "https://github.com/advanderveer/freight.js/issues"
+  },
+  "dependencies": {
+    "when": "~2.6.0"
+  }
+}
