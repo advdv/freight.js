@@ -1,6 +1,8 @@
 freight.js
 ==========
 
+[![Dependency Status](https://david-dm.org/advanderveer/freight.js.png)](https://david-dm.org/advanderveer/freight.js)
+
 An simple CommonJS dependency injection container for both node.js and the browser (using browserify). Loosely based on [pimple](http://pimple.sensiolabs.org/) but with: JSON configuration, service tagging and a perculiar javascript sauce.
 
 Goals
