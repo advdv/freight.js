@@ -4,7 +4,7 @@
   "description": "An simple CommonJS dependency injection container for both node.js and the browser (using browserify). Loosely based on pimple but with: JSON configuration, service tagging and a perculiar javascript sauce.",
   "main": "src/index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",
