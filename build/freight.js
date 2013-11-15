@@ -4,8 +4,10 @@ var Freight = require('./src/freight.js');
 module.exports = Freight;
 },{"./src/freight.js":2}],2:[function(require,module,exports){
 var Freight = function() {
+	var self = this;
 
 
+	//this is an inline comment
 
 };
 

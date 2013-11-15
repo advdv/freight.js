@@ -31,6 +31,12 @@ module.exports = function(grunt) {
             },
             command: 'istanbul cover --dir=docs/coverage _mocha'
         },
+        coverall: {
+            options: {                    
+                stdout: true
+            },
+            command: 'cat ./docs/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js'
+        },
         documentation: {
           command: 'docco src/*.js --output=docs/api'
         }
@@ -89,6 +95,6 @@ module.exports = function(grunt) {
   grunt.registerTask('start', ['watch']);
   grunt.registerTask('test', ['jshint', 'mochaTest', 'shell:coverage']);
   grunt.registerTask('build', ['jshint', 'browserify', 'uglify', 'shell:documentation']);
-  grunt.registerTask('deploy', ['gh-pages']);
+  grunt.registerTask('deploy', ['test', 'build', 'gh-pages']);
 
 };
