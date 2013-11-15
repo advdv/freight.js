@@ -1,11 +1,12 @@
 module.exports = function(grunt) {
 
-  grunt.loadNpmTasks('grunt-contrib-uglify'); 
-  grunt.loadNpmTasks('grunt-contrib-jshint'); 
-  grunt.loadNpmTasks('grunt-browserify'); 
-  grunt.loadNpmTasks('grunt-contrib-watch');  
-  grunt.loadNpmTasks('grunt-simple-mocha');  
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-browserify');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-simple-mocha');
   grunt.loadNpmTasks('grunt-docco');
+  grunt.loadNpmTasks('grunt-gh-pages');
 
   // Project configuration.
   grunt.initConfig({
@@ -33,6 +34,14 @@ module.exports = function(grunt) {
           output: 'docs/api'
         }
       }
+    },
+
+    //publish docs to pages
+    'gh-pages': {
+      options: {
+        base: 'docs'
+      },
+      src: ['**']
     },
 
     /* include commonjs */
@@ -71,5 +80,7 @@ module.exports = function(grunt) {
   grunt.registerTask('start', ['watch']);
   grunt.registerTask('test', ['jshint', 'simplemocha']);
   grunt.registerTask('build', ['jshint', 'browserify', 'uglify', 'docco']);
+
+  grunt.registerTask('deploy', ['gh-pages']);
 
 };
