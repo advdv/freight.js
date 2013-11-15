@@ -4,7 +4,10 @@
   "description": "An simple CommonJS dependency injection container for both node.js and the browser (using browserify). Loosely based on pimple but with: JSON configuration, service tagging and a perculiar javascript sauce.",
   "main": "index.js",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "blanket": {
+      "pattern": "src"
+    }
   },
   "repository": {
     "type": "git",
@@ -29,8 +32,11 @@
     "browserify": "~2.35.2",
     "grunt-browserify": "~1.2.11",
     "grunt-contrib-watch": "~0.5.3",
-    "grunt-simple-mocha": "~0.4.0",
     "grunt-docco": "~0.3.0",
-    "grunt-gh-pages": "~0.8.1"
+    "grunt-gh-pages": "~0.8.1",
+    "should": "~2.1.0",
+    "sinon": "~1.7.3",
+    "grunt-mocha-test": "~0.7.0",
+    "grunt-shell": "~0.6.0"
   }
 }

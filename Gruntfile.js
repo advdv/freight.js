@@ -4,18 +4,36 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-simple-mocha');
+  grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-docco');
   grunt.loadNpmTasks('grunt-gh-pages');
+  grunt.loadNpmTasks('grunt-shell');
 
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
     /* tests */
-    simplemocha: {
-      options: {},
-      all: { src: 'test/**/*.js' }
+    mochaTest: {
+      test: {
+        options: {
+          require: 'should'
+        },
+        src: ['test/**/*.js']
+      }
+    },
+
+    /* test coverage */
+    shell: {                    
+        coverage: {                     
+            options: {                    
+                stdout: true
+            },
+            command: 'istanbul cover --dir=docs/coverage _mocha'
+        },
+        documentation: {
+          command: 'docco src/*.js --output=docs/api'
+        }
     },
 
     /* retest on change */
@@ -26,15 +44,6 @@ module.exports = function(grunt) {
       },
     },
 
-    /* build docs */
-    docco: {
-      debug: {
-        src: ['src/**/*.js'],
-        options: {
-          output: 'docs/api'
-        }
-      }
-    },
 
     //publish docs to pages
     'gh-pages': {
@@ -78,9 +87,8 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['test', 'build']);
 
   grunt.registerTask('start', ['watch']);
-  grunt.registerTask('test', ['jshint', 'simplemocha']);
-  grunt.registerTask('build', ['jshint', 'browserify', 'uglify', 'docco']);
-
+  grunt.registerTask('test', ['jshint', 'mochaTest', 'shell:coverage']);
+  grunt.registerTask('build', ['jshint', 'browserify', 'uglify', 'shell:documentation']);
   grunt.registerTask('deploy', ['gh-pages']);
 
 };

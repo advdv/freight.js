@@ -1,4 +1,5 @@
-var assert = require("assert");
+var Freight = require('./../src/freight.js');
+var Definition = require('./../src/definition.js');
 
 describe('Freight', function(){
 
@@ -6,7 +7,7 @@ describe('Freight', function(){
 
     it('should initialize members', function(){
 
-		assert(true);
+
 
     });
 
