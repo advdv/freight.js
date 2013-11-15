@@ -13,3 +13,10 @@ Goals
 +   Be small and to the point keep to a small set of functions.
 +   Does not handle the inclusion of libraries, should work independently of which module loader you use.
 +   Reuse ideas from the many existing DI Containers (also in other languages): "build upon the shoulders of giants"
+
+Documentation
+--------------
+Automatically generated docs are:
+
++ [API](http://advanderveer.github.io/freight.js/api/freight.html)
++ [Code Coverage](http://advanderveer.github.io/freight.js/coverage/lcov-report/index.html)
