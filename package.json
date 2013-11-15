@@ -2,7 +2,7 @@
   "name": "freight.js",
   "version": "0.0.1",
   "description": "An simple CommonJS dependency injection container for both node.js and the browser (using browserify). Loosely based on pimple but with: JSON configuration, service tagging and a perculiar javascript sauce.",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "grunt test"
   },
@@ -29,6 +29,7 @@
     "browserify": "~2.35.2",
     "grunt-browserify": "~1.2.11",
     "grunt-contrib-watch": "~0.5.3",
-    "grunt-simple-mocha": "~0.4.0"
+    "grunt-simple-mocha": "~0.4.0",
+    "grunt-docco": "~0.3.0"
   }
 }

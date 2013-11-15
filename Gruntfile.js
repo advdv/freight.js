@@ -5,7 +5,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify'); 
   grunt.loadNpmTasks('grunt-contrib-watch');  
   grunt.loadNpmTasks('grunt-simple-mocha');  
-
+  grunt.loadNpmTasks('grunt-docco');
 
   // Project configuration.
   grunt.initConfig({
@@ -25,11 +25,21 @@ module.exports = function(grunt) {
       },
     },
 
+    /* build docs */
+    docco: {
+      debug: {
+        src: ['src/**/*.js'],
+        options: {
+          output: 'docs/api'
+        }
+      }
+    },
+
     /* include commonjs */
     browserify: {
       dev: {
         files: {
-          'build/freight.js': ['src/index.js'],
+          'build/freight.js': ['index.js'],
         }
       }
     },
@@ -60,6 +70,6 @@ module.exports = function(grunt) {
 
   grunt.registerTask('start', ['watch']);
   grunt.registerTask('test', ['jshint', 'simplemocha']);
-  grunt.registerTask('build', ['jshint', 'browserify', 'uglify']);
+  grunt.registerTask('build', ['jshint', 'browserify', 'uglify', 'docco']);
 
 };
