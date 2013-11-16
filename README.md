@@ -16,8 +16,8 @@ Goals
 
 Documentation
 --------------
-Automatically generated docs are:
+We currently have the following documentation:
 
-+ [API](http://advanderveer.github.io/freight.js/api/freight.html)
-+ [Code Coverage](http://advanderveer.github.io/freight.js/coverage/lcov-report/index.html)
++ [API - Generated using Groc](http://advanderveer.github.io/freight.js/)
++ [Code Coverage](http://advanderveer.github.io/freight.js/coverage/lcov-report/)
 
