@@ -94,7 +94,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('start', ['watch']);
   grunt.registerTask('test', ['jshint', 'mochaTest', 'shell:coverage']);
-  grunt.registerTask('build', ['jshint', 'browserify', 'uglify', 'shell:documentation']);
+  grunt.registerTask('build', ['jshint', 'browserify', 'uglify', 'shell:coverage', 'shell:documentation', 'shell:coverall']);
   grunt.registerTask('deploy', ['test', 'build', 'gh-pages']);
 
 };
