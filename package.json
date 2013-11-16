@@ -32,12 +32,12 @@
     "browserify": "~2.35.2",
     "grunt-browserify": "~1.2.11",
     "grunt-contrib-watch": "~0.5.3",
-    "grunt-docco": "~0.3.0",
     "grunt-gh-pages": "~0.8.1",
     "should": "~2.1.0",
     "sinon": "~1.7.3",
     "grunt-mocha-test": "~0.7.0",
     "grunt-shell": "~0.6.0",
-    "coveralls": "~2.3.0"
+    "coveralls": "~2.3.0",
+    "groc": "git://github.com/gilt/groc.git"
   }
 }

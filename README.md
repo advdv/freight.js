@@ -20,3 +20,4 @@ Automatically generated docs are:
 
 + [API](http://advanderveer.github.io/freight.js/api/freight.html)
 + [Code Coverage](http://advanderveer.github.io/freight.js/coverage/lcov-report/index.html)
+

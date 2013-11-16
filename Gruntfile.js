@@ -5,7 +5,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-browserify');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha-test');
-  grunt.loadNpmTasks('grunt-docco');
   grunt.loadNpmTasks('grunt-gh-pages');
   grunt.loadNpmTasks('grunt-shell');
 
@@ -38,7 +37,7 @@ module.exports = function(grunt) {
             command: 'cat ./docs/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js'
         },
         documentation: {
-          command: 'docco src/*.js --output=docs/api'
+          command: 'node node_modules/groc/bin/groc'
         }
     },
 
