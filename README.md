@@ -19,5 +19,6 @@ Documentation
 We currently have the following documentation:
 
 + [API - Generated using Groc](http://advanderveer.github.io/freight.js/)
++ [Examples - Generated using Groc](http://advanderveer.github.io/freight.js/examples/)
 + [Code Coverage](http://advanderveer.github.io/freight.js/coverage/lcov-report/)
 

@@ -37,7 +37,12 @@ module.exports = function(grunt) {
             command: 'cat ./docs/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js'
         },
         documentation: {
-          command: 'node node_modules/groc/bin/groc'
+
+            command: [
+                'node_modules/groc/bin/groc "./src/**/*.js" --out=docs "./README.md"',
+                'node_modules/groc/bin/groc "./test/examples/*.js" --out=docs/examples "./test/examples/index.md"'
+            ].join(' && ')
+
         }
     },
 
@@ -92,7 +97,7 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['test', 'build']);
 
   grunt.registerTask('start', ['watch']);
-  grunt.registerTask('test', ['jshint', 'mochaTest', 'shell:coverage']);
+  grunt.registerTask('test', ['jshint', 'mochaTest', 'shell:coverage', 'shell:documentation']);
   grunt.registerTask('build', ['jshint', 'browserify', 'uglify', 'shell:coverage', 'shell:documentation', 'shell:coverall']);
   grunt.registerTask('deploy', ['test', 'build', 'gh-pages']);
 
