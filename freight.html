@@ -1,0 +1,29 @@
+<!DOCTYPE html><html lang="en"><head><title>freight</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="freight"><meta name="groc-project-path" content="src/freight.js"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/freight.js</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">Freight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-public"><div class="wrapper"><p><span class='doc-section-header'>Public method define</span></p>
+
+<p>Sets a cookie given a value of any type.</p>
+
+<p>Parameters:</p>
+
+<ul>
+<li><p><strong>name must be a String.</strong><br/>(The name of the cookie to be set)</p></li>
+<li><p><strong>value can be of any type.</strong><br/>(The value to convert to string and set in the cookie)</p></li>
+<li><p><strong>options is optional and must be an Object.</strong><br/>(Options hash)</p>
+
+<ul><li><strong>options.expires is optional and can be of any type.</strong><br/>(The expiration as a number of seconds, or "session", or undefined for one year)</li></ul></li>
+</ul>
+
+<p><strong>Returns a Boolean</strong><br/>(Whether or not the cookie was successfully set)</p>
+
+<p>Example:</p>
+
+<pre><code>cookie.set('foo', 'bar', { expires : 1000000 });
+cookie.set('foo', [1, 2, 3], { expires : 'session' });
+cookie.set('foo', { bar : 'baz', boom : 'boosh' });
+</code></pre></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">define</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+
+  <span class="p">};</span>
+
+<span class="p">};</span>
+
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">Freight</span><span class="p">;</span></div></div></div></div></body></html>
