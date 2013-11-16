@@ -3,3 +3,4 @@ node_js:
   - "0.10"
 before_script:
   - "npm install -g grunt-cli"
+after_success: 'cat ./docs/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js'
