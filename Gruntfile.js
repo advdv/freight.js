@@ -24,26 +24,26 @@ module.exports = function(grunt) {
 
     /* test coverage */
     shell: {                    
-        coverage: {                     
-            options: {                    
-                stdout: true
-            },
-            command: 'istanbul cover --dir=docs/coverage _mocha'
+      coverage: {                     
+        options: {                    
+          stdout: true
         },
-        coverall: {
-            options: {                    
-                stdout: true
-            },
-            command: 'cat ./docs/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js'
+        command: 'istanbul cover --dir=docs/coverage _mocha'
+      },
+      coverall: {
+        options: {                    
+          stdout: true 
         },
-        documentation: {
+        command: 'cat ./docs/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js'
+      },
+      documentation: {
 
-            command: [
-                'node_modules/groc/bin/groc "./src/**/*.js" --out=docs "./README.md"',
-                'node_modules/groc/bin/groc "./test/examples/*.js" --out=docs/examples "./test/examples/index.md"'
-            ].join(' && ')
+        command: [
+          'node_modules/groc/bin/groc "./src/**/*.js" --out=docs "./README.md"',
+          'node_modules/groc/bin/groc "./test/examples/*.js" --out=docs/examples "./test/examples/index.md"'
+        ].join(' && ')
 
-        }
+      }
     },
 
     /* retest on change */

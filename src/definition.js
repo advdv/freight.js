@@ -1,5 +1,5 @@
 var Definition = function Definition() {
-	var self = this;
+  var self = this;
 
 
 };

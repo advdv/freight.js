@@ -10,22 +10,22 @@ describe('Defining Services', function(){
 
     it('Build a container', function(){
 
-    	/**
-    	 * ### Building a container
-    	 */
+      /**
+       * ### Building a container
+       */
 
-    	 var f = new Freight();
-
-
-    });
-
-	it('Setting a parameter', function(){
-
+       var f = new Freight();
 
 
     });
 
-	it('Defining a parameter', function(){
+  it('Setting a parameter', function(){
+
+
+
+    });
+
+  it('Defining a parameter', function(){
 
 
 
