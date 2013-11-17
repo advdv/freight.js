@@ -2,34 +2,337 @@
 var Freight = require('./src/freight.js');
 
 module.exports = Freight;
-},{"./src/freight.js":2}],2:[function(require,module,exports){
+},{"./src/freight.js":3}],2:[function(require,module,exports){
+var Definition = function Definition(id, conf, container) {
+  var self = this;
+
+  /**
+   * the id of the definition
+   * @type {string}
+   */
+  self.id = id;
+
+  /**
+   * The callable that creates the service
+   * @type {Function}
+   */
+  self.fn = false;
+
+  /**
+   * The arguments that will be send to the callable when called, order matters
+   * @type {Array}
+   */
+  self.args = [];
+
+  /**
+   * Indicate wether the service behaves like a singleton; returning the same instance on repeated requests
+   * @type {Boolean}
+   */
+  self.shared = false;
+
+  /**
+   * Add an argument (at the end) to the definition
+   *
+   * @method addArgument
+   * @param {mixed} arg
+   * @chainable
+   */
+  self.addArgument = function addArgument(arg) {
+    self.args.push(arg);
+    return self;
+  };
+
+  /**
+   * Resolve arguments that are container ids
+   * @return {Array} the resolved arguments
+   */
+  self.resolveArguments = function resolveArguments(arr) {
+    arr = typeof arr !== 'undefined' ? arr : self.args;
+
+    arr.forEach(function(arg, i){
+      if(container.isId(arg)) {
+        arr[i] = container.get(arg.replace(container.idPrefix, ''));
+      } else if(Array.isArray(arg)) {
+        arr[i] = self.resolveArguments(arg);
+      } else if(arg.constructor == Object) {
+        Object.keys(arg).forEach(function(k){
+          if(container.isId(arg[k]))
+            arg[k] = container.get(arg[k].replace(container.idPrefix, ''));
+        });
+      }
+
+    });
+
+    return arr;
+  };
+
+  /**
+   * Create an callable that can creates instances for this definitions
+   *
+   * @method
+   * @private
+   * @param  {string} fnParam the container parameter that contains the constructor or factory function
+   * @param  {string} type either 'c' for constructor or 'f' for factory
+   * @return {Function}
+   */
+  self._createCallable = function(fnParam, type) {
+    var res = false;
+
+    var getCheckCallable = function(p) {
+      var fn = false;
+      try {
+        fn = container.getParameter(p.replace(container.idPrefix, ''));
+      } catch(e) {
+        throw new Error('Whene trying to instanciate service "'+self.id+'", the parameter specifying the '+((type == 'f') ? ('factory') : ('constructor'))+': "'+fnParam+'" did not exist.');
+      }
+      
+      if(typeof fn !== 'function') {
+        throw new Error('Whene trying to instanciate service "'+self.id+'", the parameter specifying the '+((type == 'f') ? ('factory') : ('constructor'))+': "'+fnParam+'" did not return a function, instead received: "'+fn+'"');
+      }
+
+      return fn;
+    };
+
+    function neu(constructor, args) {
+        var instance = Object.create(constructor.prototype);
+        var result = constructor.apply(instance, args);
+        return typeof result === 'object' ? result : instance;
+    }
+
+    //constructor type use new
+    if(type === 'c') {
+      res = function() {      
+        var _c = new getCheckCallable(fnParam);
+        var _args = self.resolveArguments();
+        return neu(_c, _args); 
+      };
+
+      return res;
+    } 
+
+    //factory type just call it
+    return function() {      
+        return getCheckCallable(fnParam).apply(container, self.resolveArguments()); //create using factory fn
+    };
+    
+  };
+
+  /**
+   * Apply an defintion configuration
+   * @param  {Object} conf
+   * @return {Definition}
+   * @chainable
+   */
+  self.configure = function(conf) {
+
+    if(conf.shared !== undefined) {
+        if(String(conf.shared).toLowerCase() === 'true') {
+          self.shared = true;
+        } else if(String(conf.shared).toLowerCase() === 'false') {
+          self.shared = false;
+        } else {
+          throw new Error('Configuration of "'+self.id+'" shared should be an boolean, received: "'+conf+'"');
+        }
+    }
+
+    //get some way to construct
+    var fnParam = conf.constructorFn;
+    var type = 'c';
+    if(fnParam === undefined) {
+      fnParam = conf.factoryFn;
+      type = 'f';
+    } else if(conf.factoryFn !== undefined) {
+      throw new Error('Configuration of "'+self.id+'" should specify a constructor OR an factory function, not both - received: "'+conf+'"');
+    }
+
+    if(fnParam === undefined)
+      throw new Error('Configuration of "'+self.id+'" must either specify an constructor or an factory function - received: "'+conf+'"');
+
+    if(container.isId(fnParam) === false) {
+      throw new Error('Constructor or an factory function of "'+self.id+'" should be specified using a parameter id - received: "'+fnParam+'"');
+    }
+
+    self.fn = self._createCallable(fnParam, type);
+
+    //arguments
+    var args = conf.arguments;
+    if(args !== undefined) {
+
+      if(!Array.isArray(args))
+        throw new Error('Instantiation arguments of "'+self.id+'" should be specified as an array - received: "'+args+'"');
+
+      args.forEach(function(arg){
+        self.addArgument(arg);
+      });
+
+    }
+
+    return self;
+  };
+
+  //configure the definition with the provided argument
+  self.configure(conf);
+
+};
+
+module.exports = Definition;
+},{}],3:[function(require,module,exports){
+var Definition = require('./definition.js');
+
 var Freight = function() {
-	var self = this;
+  var self = this;
 
-	/**
-	 * Sets a cookie given a value of any type.
-	 *
-	 * @method    define
-	 * @public
-	 *
-	 * @param     {String}   name               The name of the cookie to be set
-	 * @param     {Mixed}    value              The value to convert to string and set in the cookie
-	 * @param     {Object}   [options]          Options hash
-	 * @param     {Mixed}    [options.expires]  The expiration as a number of seconds, or "session", or undefined for one year
-	 *
-	 * @return    {Boolean}                     Whether or not the cookie was successfully set
-	 *
-	 * @example
-	 *   cookie.set('foo', 'bar', { expires : 1000000 });
-	 *   cookie.set('foo', [1, 2, 3], { expires : 'session' });
-	 *   cookie.set('foo', { bar : 'baz', boom : 'boosh' });
-	 */
-	self.define = function(name, value, options) {
+  /**
+   * Determin how service id are distinques of normal string arguments in configuration
+   * @type {String}
+   */
+  self.idPrefix = ':';
 
-	};
+  /**
+   * the array of definitions this container managers
+   * @type {Array}
+   * @private
+   */
+  self._definitions = [];
+
+  /**
+   * the hash with parameters this container holds
+   * @type {Object}
+   * @private
+   */
+  self._parameters = {};
+
+  /**
+   * Contains the shared service instances
+   * @type {Object}
+   */
+  self._shared = {};
+
+  /**
+   * Get and service of parameter from the container
+   *
+   * @method getService()
+   * @param  {string} id
+   * @return {mixed}
+   */
+  self.get = function get(id) {
+    var res = false;
+    try {
+      res = self.getParameter(id);  
+    } catch(e) {
+      res = self.getService(id);
+    }
+    
+    return res;
+  };
+
+  /**
+   * Check wether the string an parameter id
+   * @method isId()
+   * @param  {string}  str
+   * @return {Boolean}
+   */
+  self.isId = function isId(val) {
+    if(typeof val !== 'string')
+      return false;
+
+    return ((val.indexOf(self.idPrefix) === 0) ? (true) : (false));
+  };
+
+  /**
+   * Set a parameter on this container
+   * 
+   * @method setParameter()
+   * @param {string} id
+   * @param {mixed} val
+   * @chainable
+   */
+  self.setParameter = function setParameter(id, val) {
+    self._parameters[id] = val;
+    return self;
+  };
+
+  /**
+   * Retrieve a parameter from the container
+   * @param  {string} id
+   * @return {mixed}
+   */
+  self.getParameter = function getParameter(id) {
+    var res = self._parameters[id];
+    if(res === undefined)
+      throw new Error('Parameter "'+id+'" not found.');
+
+    return res;
+  };
+
+  /**
+   * Return an service by its id
+   *
+   * @method getService()
+   * @param  {string} id
+   * @return {mixed}
+   */
+  self.getService = function getService(id) {
+    
+    if(self._shared[id] !== undefined) {
+      return self._shared[id];
+    }
+
+    var def = false;
+    self._definitions.forEach(function(d){
+      if(d.id == id) {
+        def = d;
+      }
+    });
+
+    if(def === false)
+      throw new Error('Service "'+id+'" not found.');
+
+    var service = def.fn();
+    if(service === undefined) {
+      throw new Error('"'+id+'" service returned "'+undefined+'" on instantiation.');
+    }
+
+    if(def.shared === true) {
+      self._shared[id] = service;
+    }
+    
+    return service;
+  };
+
+
+  /**
+   * Register a new service as the specified id
+   * 
+   * @method register()
+   * @param  {string}   id
+   * @param  {Object} conf the configuration hash for the individual service
+   * @return {Definition}
+   */
+  self.register = function register(id, conf) {
+    var def = new Definition(id, conf, self);
+
+    self._definitions.push(def);
+    return def;
+  };
+
+  /**
+   * Register several definitions from an configuration hash (e.g. json)
+   * 
+   * @method  registerAll()
+   * @param  {Object} conf the services
+   * @return  {Array} a array of registered definitions
+   */
+  self.registerAll = function build(conf) {
+    var res = [];
+    Object.keys(conf).forEach(function(id){
+      res.push(self.register(id, conf[id]));
+    });
+    return res;
+  };
 
 };
 
 module.exports = Freight;
-},{}]},{},[1])
+},{"./definition.js":2}]},{},[1])
 ;

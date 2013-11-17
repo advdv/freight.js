@@ -16,7 +16,7 @@ module.exports = function(grunt) {
     mochaTest: {
       test: {
         options: {
-          require: 'should'
+          require: ['should', 'sinon']
         },
         src: ['test/**/*.js']
       }
@@ -28,7 +28,7 @@ module.exports = function(grunt) {
         options: {                    
           stdout: true
         },
-        command: 'istanbul cover --dir=docs/coverage _mocha'
+        command: 'istanbul cover --dir=docs/coverage _mocha -- --require="should" --require="sinon"'
       },
       coverall: {
         options: {                    
@@ -49,7 +49,7 @@ module.exports = function(grunt) {
     /* retest on change */
     watch: {
       dev: {
-        files: ['src/**/*.js', 'test/**/*.js'],
+        files: ['src/**/*.js', 'test/**/*.js', 'test/**/*.json'],
         tasks: ['test']
       },
     },

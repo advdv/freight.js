@@ -1,27 +1,144 @@
-<!DOCTYPE html><html lang="en"><head><title>freight</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="freight"><meta name="groc-project-path" content="src/freight.js"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/freight.js</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">Freight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-public"><div class="wrapper"><p><span class='doc-section-header'>Public method define</span></p>
+<!DOCTYPE html><html lang="en"><head><title>freight</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="freight"><meta name="groc-project-path" content="src/freight.js"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/freight.js</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">Definition</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./definition.js&#39;</span><span class="p">);</span>
 
-<p>Sets a cookie given a value of any type.</p>
+<span class="kd">var</span> <span class="nx">Freight</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> </span></p>
+
+<p>Determin how service id are distinques of normal string arguments in configuration</p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">idPrefix</span> <span class="o">=</span> <span class="s1">&#39;:&#39;</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private </span></p>
+
+<p>the array of definitions this container managers</p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">_definitions</span> <span class="o">=</span> <span class="p">[];</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private </span></p>
+
+<p>the hash with parameters this container holds</p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">_parameters</span> <span class="o">=</span> <span class="p">{};</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> </span></p>
+
+<p>Contains the shared service instances</p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">_shared</span> <span class="o">=</span> <span class="p">{};</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'>Method getService()</span></p>
+
+<p>Get and service of parameter from the container</p>
 
 <p>Parameters:</p>
 
 <ul>
-<li><p><strong>name must be a String.</strong><br/>(The name of the cookie to be set)</p></li>
-<li><p><strong>value can be of any type.</strong><br/>(The value to convert to string and set in the cookie)</p></li>
-<li><p><strong>options is optional and must be an Object.</strong><br/>(Options hash)</p>
-
-<ul><li><strong>options.expires is optional and can be of any type.</strong><br/>(The expiration as a number of seconds, or "session", or undefined for one year)</li></ul></li>
+<li><strong>id must be a string.</strong></li>
 </ul>
 
-<p><strong>Returns a Boolean</strong><br/>(Whether or not the cookie was successfully set)</p>
+<p><strong>Returns a mixed</strong></p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">get</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">get</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">res</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="k">try</span> <span class="p">{</span>
+      <span class="nx">res</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">getParameter</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>  
+    <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">res</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">getService</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nx">res</span><span class="p">;</span>
+  <span class="p">};</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'>Method isId()</span></p>
 
-<p>Example:</p>
+<p>Check wether the string an parameter id</p>
 
-<pre><code>cookie.set('foo', 'bar', { expires : 1000000 });
-cookie.set('foo', [1, 2, 3], { expires : 'session' });
-cookie.set('foo', { bar : 'baz', boom : 'boosh' });
-</code></pre></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">define</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+<p>Parameters:</p>
 
+<ul>
+<li><strong>str must be a string.</strong></li>
+</ul>
+
+<p><strong>Returns a Boolean</strong></p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">isId</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">isId</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">val</span> <span class="o">!==</span> <span class="s1">&#39;string&#39;</span><span class="p">)</span>
+      <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="p">((</span><span class="nx">val</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">idPrefix</span><span class="p">)</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="o">?</span> <span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="o">:</span> <span class="p">(</span><span class="kc">false</span><span class="p">));</span>
+  <span class="p">};</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'>Method setParameter()</span></p>
+
+<p>Set a parameter on this container</p>
+
+<p>Parameters:</p>
+
+<ul>
+<li><p><strong>id must be a string.</strong></p></li>
+<li><p><strong>val must be a mixed.</strong></p></li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">setParameter</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">setParameter</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">_parameters</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="nx">val</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">self</span><span class="p">;</span>
+  <span class="p">};</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'></span></p>
+
+<p>Retrieve a parameter from the container</p>
+
+<p>Parameters:</p>
+
+<ul>
+<li><strong>id must be a string.</strong></li>
+</ul>
+
+<p><strong>Returns a mixed</strong></p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">getParameter</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">getParameter</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">res</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_parameters</span><span class="p">[</span><span class="nx">id</span><span class="p">];</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">res</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Parameter &quot;&#39;</span><span class="o">+</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;&quot; not found.&#39;</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="nx">res</span><span class="p">;</span>
+  <span class="p">};</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'>Method getService()</span></p>
+
+<p>Return an service by its id</p>
+
+<p>Parameters:</p>
+
+<ul>
+<li><strong>id must be a string.</strong></li>
+</ul>
+
+<p><strong>Returns a mixed</strong></p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">getService</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">getService</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+    
+    <span class="k">if</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">_shared</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_shared</span><span class="p">[</span><span class="nx">id</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="kd">var</span> <span class="nx">def</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">_definitions</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">id</span> <span class="o">==</span> <span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">def</span> <span class="o">=</span> <span class="nx">d</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nx">def</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Service &quot;&#39;</span><span class="o">+</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;&quot; not found.&#39;</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">def</span><span class="p">.</span><span class="nx">fn</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">service</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="o">+</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;&quot; service returned &quot;&#39;</span><span class="o">+</span><span class="kc">undefined</span><span class="o">+</span><span class="s1">&#39;&quot; on instantiation.&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nx">def</span><span class="p">.</span><span class="nx">shared</span> <span class="o">===</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">_shared</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="nx">service</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="k">return</span> <span class="nx">service</span><span class="p">;</span>
+  <span class="p">};</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'>Method register()</span></p>
+
+<p>Register a new service as the specified id</p>
+
+<p>Parameters:</p>
+
+<ul>
+<li><p><strong>id must be a string.</strong></p></li>
+<li><p><strong>conf must be an Object.</strong><br/>(the configuration hash for the individual service)</p></li>
+</ul>
+
+<p><strong>Returns a Definition</strong></p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">register</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">register</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">conf</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">def</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Definition</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">conf</span><span class="p">,</span> <span class="nx">self</span><span class="p">);</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">_definitions</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">def</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">def</span><span class="p">;</span>
+  <span class="p">};</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'>Method registerAll()</span></p>
+
+<p>Register several definitions from an configuration hash (e.g. json)</p>
+
+<p>Parameters:</p>
+
+<ul>
+<li><strong>conf must be an Object.</strong><br/>(the services)</li>
+</ul>
+
+<p><strong>Returns an Array</strong><br/>(a array of registered definitions)</p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">registerAll</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">build</span><span class="p">(</span><span class="nx">conf</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">res</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">conf</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">id</span><span class="p">){</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">conf</span><span class="p">[</span><span class="nx">id</span><span class="p">]));</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="nx">res</span><span class="p">;</span>
   <span class="p">};</span>
 
 <span class="p">};</span>

@@ -1,0 +1,24 @@
+{
+	"invalid1": {
+
+
+	},
+	"invalid2": {
+		"factoryFn": false
+
+	},
+	"invalid3": {
+		"factoryFn": ":car",
+		"constructorFn": ":Car"
+	},
+	"invalid4": {
+		"constructorFn": ":Car",
+		"arguments": "a"
+	},
+	"invalid5": {
+		"constructorFn": ":Car",
+		"shared": "a"
+	}
+
+
+}

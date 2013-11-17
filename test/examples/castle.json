@@ -1,0 +1,28 @@
+{
+  "castle_fret": {
+    "shared": true,
+    "constructorFn": ":castle.class",
+    "arguments": [":sir_freight", [":tower", ":tower", [":tower", ":tower"]]]
+  },
+
+  "sir_freight": {
+    "shared": true,
+    "constructorFn": ":knight.class",
+    "arguments": ["Sir Freight", ":sword", {
+      "strength": 40,
+      "dexterity": 100,
+      "quest": ":knight.quest",
+      "tower": ":tower"
+    }]
+  },
+
+  "sword": {
+    "factoryFn": ":sword.factory"
+  },
+
+  "tower": {
+    "constructorFn": ":tower.class",
+    "arguments": [":tower.height"]
+  }
+
+}

@@ -1,6 +1,155 @@
-<!DOCTYPE html><html lang="en"><head><title>definition</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="definition"><meta name="groc-project-path" content="src/definition.js"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/definition.js</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">Definition</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">Definition</span><span class="p">()</span> <span class="p">{</span>
-  <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+<!DOCTYPE html><html lang="en"><head><title>definition</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="definition"><meta name="groc-project-path" content="src/definition.js"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/definition.js</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="kd">var</span> <span class="nx">Definition</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">Definition</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="nx">conf</span><span class="p">,</span> <span class="nx">container</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">self</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> </span></p>
 
+<p>the id of the definition</p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">id</span> <span class="o">=</span> <span class="nx">id</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> </span></p>
+
+<p>The callable that creates the service</p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">fn</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> </span></p>
+
+<p>The arguments that will be send to the callable when called, order matters</p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">args</span> <span class="o">=</span> <span class="p">[];</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> </span></p>
+
+<p>Indicate wether the service behaves like a singleton; returning the same instance on repeated requests</p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">shared</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'>Method addArgument</span></p>
+
+<p>Add an argument (at the end) to the definition</p>
+
+<p>Parameters:</p>
+
+<ul>
+<li><strong>arg must be a mixed.</strong></li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">addArgument</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">addArgument</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">args</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">arg</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">self</span><span class="p">;</span>
+  <span class="p">};</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'></span></p>
+
+<p>Resolve arguments that are container ids</p>
+
+<p><strong>Returns an Array</strong><br/>(the resolved arguments)</p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">resolveArguments</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">resolveArguments</span><span class="p">(</span><span class="nx">arr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">arr</span> <span class="o">=</span> <span class="k">typeof</span> <span class="nx">arr</span> <span class="o">!==</span> <span class="s1">&#39;undefined&#39;</span> <span class="o">?</span> <span class="nx">arr</span> <span class="o">:</span> <span class="nx">self</span><span class="p">.</span><span class="nx">args</span><span class="p">;</span>
+
+    <span class="nx">arr</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">arg</span><span class="p">,</span> <span class="nx">i</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">isId</span><span class="p">(</span><span class="nx">arg</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">arr</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">arg</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">idPrefix</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">));</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">arg</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nx">arr</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">resolveArguments</span><span class="p">(</span><span class="nx">arg</span><span class="p">);</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">arg</span><span class="p">.</span><span class="nx">constructor</span> <span class="o">==</span> <span class="nb">Object</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Object</span><span class="p">.</span><span class="nx">keys</span><span class="p">(</span><span class="nx">arg</span><span class="p">).</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">k</span><span class="p">){</span>
+          <span class="k">if</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">isId</span><span class="p">(</span><span class="nx">arg</span><span class="p">[</span><span class="nx">k</span><span class="p">]))</span>
+            <span class="nx">arg</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">arg</span><span class="p">[</span><span class="nx">k</span><span class="p">].</span><span class="nx">replace</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">idPrefix</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">));</span>
+        <span class="p">});</span>
+      <span class="p">}</span>
+
+    <span class="p">});</span>
+
+    <span class="k">return</span> <span class="nx">arr</span><span class="p">;</span>
+  <span class="p">};</span></div></div></div><div class="segment"><div class="comments doc-section doc-section-private"><div class="wrapper"><p><span class='doc-section-header'>Private method</span></p>
+
+<p>Create an callable that can creates instances for this definitions</p>
+
+<p>Parameters:</p>
+
+<ul>
+<li><p><strong>fnParam must be a string.</strong><br/>(the container parameter that contains the constructor or factory function)</p></li>
+<li><p><strong>type must be a string.</strong><br/>(either 'c' for constructor or 'f' for factory)</p></li>
+</ul>
+
+<p><strong>Returns a Function</strong></p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">_createCallable</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">fnParam</span><span class="p">,</span> <span class="nx">type</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">res</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+
+    <span class="kd">var</span> <span class="nx">getCheckCallable</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">var</span> <span class="nx">fn</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+      <span class="k">try</span> <span class="p">{</span>
+        <span class="nx">fn</span> <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">getParameter</span><span class="p">(</span><span class="nx">p</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">idPrefix</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">));</span>
+      <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Whene trying to instanciate service &quot;&#39;</span><span class="o">+</span><span class="nx">self</span><span class="p">.</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;&quot;, the parameter specifying the &#39;</span><span class="o">+</span><span class="p">((</span><span class="nx">type</span> <span class="o">==</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="p">(</span><span class="s1">&#39;factory&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="p">(</span><span class="s1">&#39;constructor&#39;</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;: &quot;&#39;</span><span class="o">+</span><span class="nx">fnParam</span><span class="o">+</span><span class="s1">&#39;&quot; did not exist.&#39;</span><span class="p">);</span>
+      <span class="p">}</span>
+      
+      <span class="k">if</span><span class="p">(</span><span class="k">typeof</span> <span class="nx">fn</span> <span class="o">!==</span> <span class="s1">&#39;function&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Whene trying to instanciate service &quot;&#39;</span><span class="o">+</span><span class="nx">self</span><span class="p">.</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;&quot;, the parameter specifying the &#39;</span><span class="o">+</span><span class="p">((</span><span class="nx">type</span> <span class="o">==</span> <span class="s1">&#39;f&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="p">(</span><span class="s1">&#39;factory&#39;</span><span class="p">)</span> <span class="o">:</span> <span class="p">(</span><span class="s1">&#39;constructor&#39;</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;: &quot;&#39;</span><span class="o">+</span><span class="nx">fnParam</span><span class="o">+</span><span class="s1">&#39;&quot; did not return a function, instead received: &quot;&#39;</span><span class="o">+</span><span class="nx">fn</span><span class="o">+</span><span class="s1">&#39;&quot;&#39;</span><span class="p">);</span>
+      <span class="p">}</span>
+
+      <span class="k">return</span> <span class="nx">fn</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="kd">function</span> <span class="nx">neu</span><span class="p">(</span><span class="nx">constructor</span><span class="p">,</span> <span class="nx">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">instance</span> <span class="o">=</span> <span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">constructor</span><span class="p">.</span><span class="nx">prototype</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">constructor</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="nx">instance</span><span class="p">,</span> <span class="nx">args</span><span class="p">);</span>
+        <span class="k">return</span> <span class="k">typeof</span> <span class="nx">result</span> <span class="o">===</span> <span class="s1">&#39;object&#39;</span> <span class="o">?</span> <span class="nx">result</span> <span class="o">:</span> <span class="nx">instance</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">//constructor type use new</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">type</span> <span class="o">===</span> <span class="s1">&#39;c&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">res</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>      
+        <span class="kd">var</span> <span class="nx">_c</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">getCheckCallable</span><span class="p">(</span><span class="nx">fnParam</span><span class="p">);</span>
+        <span class="kd">var</span> <span class="nx">_args</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">resolveArguments</span><span class="p">();</span>
+        <span class="k">return</span> <span class="nx">neu</span><span class="p">(</span><span class="nx">_c</span><span class="p">,</span> <span class="nx">_args</span><span class="p">);</span> 
+      <span class="p">};</span>
+
+      <span class="k">return</span> <span class="nx">res</span><span class="p">;</span>
+    <span class="p">}</span> 
+
+    <span class="c1">//factory type just call it</span>
+    <span class="k">return</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>      
+        <span class="k">return</span> <span class="nx">getCheckCallable</span><span class="p">(</span><span class="nx">fnParam</span><span class="p">).</span><span class="nx">apply</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">self</span><span class="p">.</span><span class="nx">resolveArguments</span><span class="p">());</span> <span class="c1">//create using factory fn</span>
+    <span class="p">};</span>
+    
+  <span class="p">};</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'></span></p>
+
+<p>Apply an defintion configuration</p>
+
+<p>Parameters:</p>
+
+<ul>
+<li><strong>conf must be an Object.</strong></li>
+</ul>
+
+<p><strong>Returns a Definition</strong></p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">configure</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">conf</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nx">conf</span><span class="p">.</span><span class="nx">shared</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="nb">String</span><span class="p">(</span><span class="nx">conf</span><span class="p">.</span><span class="nx">shared</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">===</span> <span class="s1">&#39;true&#39;</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">self</span><span class="p">.</span><span class="nx">shared</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nb">String</span><span class="p">(</span><span class="nx">conf</span><span class="p">.</span><span class="nx">shared</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">===</span> <span class="s1">&#39;false&#39;</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">self</span><span class="p">.</span><span class="nx">shared</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Configuration of &quot;&#39;</span><span class="o">+</span><span class="nx">self</span><span class="p">.</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;&quot; shared should be an boolean, received: &quot;&#39;</span><span class="o">+</span><span class="nx">conf</span><span class="o">+</span><span class="s1">&#39;&quot;&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">//get some way to construct</span>
+    <span class="kd">var</span> <span class="nx">fnParam</span> <span class="o">=</span> <span class="nx">conf</span><span class="p">.</span><span class="nx">constructorFn</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="s1">&#39;c&#39;</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">fnParam</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nx">fnParam</span> <span class="o">=</span> <span class="nx">conf</span><span class="p">.</span><span class="nx">factoryFn</span><span class="p">;</span>
+      <span class="nx">type</span> <span class="o">=</span> <span class="s1">&#39;f&#39;</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="nx">conf</span><span class="p">.</span><span class="nx">factoryFn</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Configuration of &quot;&#39;</span><span class="o">+</span><span class="nx">self</span><span class="p">.</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;&quot; should specify a constructor OR an factory function, not both - received: &quot;&#39;</span><span class="o">+</span><span class="nx">conf</span><span class="o">+</span><span class="s1">&#39;&quot;&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nx">fnParam</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Configuration of &quot;&#39;</span><span class="o">+</span><span class="nx">self</span><span class="p">.</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;&quot; must either specify an constructor or an factory function - received: &quot;&#39;</span><span class="o">+</span><span class="nx">conf</span><span class="o">+</span><span class="s1">&#39;&quot;&#39;</span><span class="p">);</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nx">container</span><span class="p">.</span><span class="nx">isId</span><span class="p">(</span><span class="nx">fnParam</span><span class="p">)</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Constructor or an factory function of &quot;&#39;</span><span class="o">+</span><span class="nx">self</span><span class="p">.</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;&quot; should be specified using a parameter id - received: &quot;&#39;</span><span class="o">+</span><span class="nx">fnParam</span><span class="o">+</span><span class="s1">&#39;&quot;&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">fn</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_createCallable</span><span class="p">(</span><span class="nx">fnParam</span><span class="p">,</span> <span class="nx">type</span><span class="p">);</span>
+
+    <span class="c1">//arguments</span>
+    <span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">conf</span><span class="p">.</span><span class="nx">arguments</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">args</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+
+      <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">args</span><span class="p">))</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Instantiation arguments of &quot;&#39;</span><span class="o">+</span><span class="nx">self</span><span class="p">.</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;&quot; should be specified as an array - received: &quot;&#39;</span><span class="o">+</span><span class="nx">args</span><span class="o">+</span><span class="s1">&#39;&quot;&#39;</span><span class="p">);</span>
+
+      <span class="nx">args</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">arg</span><span class="p">){</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">addArgument</span><span class="p">(</span><span class="nx">arg</span><span class="p">);</span>
+      <span class="p">});</span>
+
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nx">self</span><span class="p">;</span>
+  <span class="p">};</span>
+
+  <span class="c1">//configure the definition with the provided argument</span>
+  <span class="nx">self</span><span class="p">.</span><span class="nx">configure</span><span class="p">(</span><span class="nx">conf</span><span class="p">);</span>
 
 <span class="p">};</span>
 

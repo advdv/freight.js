@@ -1,0 +1,18 @@
+{
+	"car": {
+		"constructorFn": ":car_class",
+		"arguments": [":engine", ":wheels"]
+
+	},
+	"engine": {
+		"shared": "true",
+		"factoryFn": ":engine_factory"
+
+
+	},
+	"wheels": {
+		"constructorFn": ":wheels_class"
+
+	}
+
+}
