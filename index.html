@@ -88,7 +88,7 @@
     "shared": true,
     "constructorFn": ":knight.class",
 
-    //arguments can also include option hashes, ids will be resolved on level deep
+    //arguments can also include option hashes, ids will be resolved one level deep
     "arguments": ["Sir Freight", ":sword", {
       "strength": 40,
       "dexterity": 100,
@@ -103,7 +103,7 @@
     "factoryFn": ":sword.factory"
   },
 
-  //notice that the tower is not shared (so is the sword) which means ne instances are
+  //notice that the tower is not shared (so is the sword) which means that instances are
   //created on every retrieval from the container
   "tower": {
     "constructorFn": ":tower.class",
@@ -165,6 +165,5 @@
 
 <ul>
 <li><a href="http://advanderveer.github.io/freight.js/">API - Generated using Groc</a></li>
-<li><a href="http://advanderveer.github.io/freight.js/examples/">Examples - Generated using Groc</a></li>
-<li><a href="http://advanderveer.github.io/freight.js/coverage/lcov-report/">Code Coverage</a></li>
+<li><a href="http://advanderveer.github.io/freight.js/coverage/lcov-report/">Code Coverage (~100%)</a></li>
 </ul></div></div></div></div></body></html>
