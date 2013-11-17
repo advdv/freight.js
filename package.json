@@ -1,7 +1,7 @@
 {
   "name": "freight.js",
-  "version": "0.1.5",
-  "description": "An simple CommonJS dependency injection container for both node.js and the browser (using browserify). Loosely based on pimple but with: JSON configuration, service tagging and a perculiar javascript sauce.",
+  "version": "0.1.7",
+  "description": "An simple CommonJS dependency injection container for both node.js and the browser (using browserify)",
   "main": "index.js",
   "scripts": {
     "test": "grunt test",
