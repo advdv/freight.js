@@ -37,7 +37,6 @@
     "sinon": "~1.7.3",
     "grunt-mocha-test": "~0.7.0",
     "grunt-shell": "~0.6.0",
-    "coveralls": "~2.3.0",
     "groc": "git://github.com/gilt/groc.git"
   }
 }
