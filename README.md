@@ -14,6 +14,17 @@ Goals
 +   Does not handle the inclusion of libraries, should work independently of which module loader you use.
 +   Reuse ideas from the many existing DI Containers (also in other languages): "build upon the shoulders of giants"
 
+Usage
+--------
+In node you can install this using npm: 
+
+`npm install freight.js`
+
+Then you can simply require it in your application:
+ ```javascript
+ var Freight = require('freight.js');
+ ```
+
 Documentation
 --------------
 We currently have the following documentation:
