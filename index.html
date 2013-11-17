@@ -1,7 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><title>index</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="index"><meta name="groc-project-path" content="README.md"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">README.md</div></div><div id="document"><div class="segment"><div class="comments "><div class="wrapper"><h1 id="freightjs">freight.js</h1>
 
 <p><a href="https://travis-ci.org/advanderveer/freight.js"><img src="https://travis-ci.org/advanderveer/freight.js.png" alt="Build Status" title="" /></a>
-<a href="https://david-dm.org/advanderveer/freight.js"><img src="https://david-dm.org/advanderveer/freight.js.png" alt="Dependency Status" title="" /></a></p>
+<a href="https://david-dm.org/advanderveer/freight.js"><img src="https://david-dm.org/advanderveer/freight.js.png" alt="Dependency Status" title="" /></a>
+<a href="http://badge.fury.io/js/freight.js"><img src="https://badge.fury.io/js/freight.js.png" alt="NPM version" title="" /></a></p>
 
 <p>An simple CommonJS dependency injection container for both node.js and the browser (using browserify). Loosely based on the <a href="https://github.com/symfony/DependencyInjection">Symfony2 DependencyInjection component</a> but more minimal. Features include: JSON configuration, service tagging and a perculiar javascript sauce.</p>
 
@@ -14,7 +15,151 @@
 <li>Reuse ideas from the many existing DI Containers (also in other languages): "build upon the shoulders of giants"</li>
 </ul>
 
-<h2 id="documentation">Documentation</h2>
+<h2 id="installation">Installation</h2>
+
+<p>In node you can install this using npm: </p>
+
+<p><code>npm install freight.js</code></p>
+
+<p>Then you can simply require it in your application:</p>
+
+<p><code>javascript
+ var Freight = require('freight.js');
+</code></p>
+
+<h2 id="basic-usage">Basic Usage</h2>
+
+<p>In the most basic senario services are configured using a configuration object (possibly from a json file) which is parsed in order to create the container and 'wire' your application together. The following example considers the scenario in wich we want to use javascript to build a castle called 'castle_fret'. </p>
+
+<p>We can consider the following domain model for this task: </p>
+
+<p>(Note: you could seperate this in different files of course. freight.js doesn't not make any assumptions about how you include you files or how you declare your components):</p>
+
+<pre><code class="javascript">  // A castle depends on one knight and several towers
+  var Castle = function(knight, towers) {
+    this.knight = knight;
+    this.towers = towers;
+  };
+
+  // A tower has a height property
+  var Tower = function(height) {
+    this.height = height;
+  };
+
+  // A knight has a name, receives a sword and has an attribute hash
+  var Knight = function(name, sword, attributes) {
+    this.name = name;
+    this.sword = sword;
+    this.attributes = attributes;
+  };
+
+  // the sword can be enhanced after construction
+  var Sword = function(name) {
+    this.name = name;
+    this.fastenGrip = function() {
+      this.fastened = true;
+    };
+
+    this.sharpenBlade = function() {
+      this.sharpened = true;
+    };
+  };
+</code></pre>
+
+<p>We use the following to configure our services:</p>
+
+<pre><code class="javascript">{
+
+  // the hash keys will the identifier, should be unique
+  "castle_fret": {   
+
+    // indicates whether it behaves like a singleton (optional)
+    "shared": true, 
+
+    // this should be a reference to another parameter or service
+    // you can recognize references by the ":" prefix
+    "constructorFn": ":castle.class",   
+
+    //the arguments passed to the constructor when the service is initialized 
+    "arguments": [":sir_freight", [":tower", ":tower", [":tower", ":tower"]]]
+  },
+
+  "sir_freight": {
+    "shared": true,
+    "constructorFn": ":knight.class",
+
+    //arguments can also include option hashes, ids will be resolved on level deep
+    "arguments": ["Sir Freight", ":sword", {
+      "strength": 40,
+      "dexterity": 100,
+      "quest": ":knight.quest",
+      "tower": ":tower"
+    }]
+  },
+
+  "sword": {
+
+    //instead of the constructor you can also specify an factory function
+    "factoryFn": ":sword.factory"
+  },
+
+  //notice that the tower is not shared (so is the sword) which means ne instances are
+  //created on every retrieval from the container
+  "tower": {
+    "constructorFn": ":tower.class",
+    "arguments": [":tower.height"]
+  }
+}
+</code></pre>
+
+<p>Our castle is now only a few lines of code away:</p>
+
+<pre><code class="javascript">    var Freight = require('./../../src/freight.js');
+
+    var Castle = ...
+    var Tower = ...
+    //insert your model here..
+
+    var services = {
+      ... // the configuration above or require it as an json file
+    }
+
+    var container = new Freight();      
+
+    //parse the configuration
+    container.registerAll(services);
+
+    //before we can initiate the castle (or one of the other services) we'll need to define
+    //the required parameters (the setParameter() method is chainable):
+
+    container.setParameter('castle.class', Castle)
+             .setParameter('tower.class', Tower)
+             .setParameter('tower.height', 30)
+             .setParameter('knight.class', Knight)
+             .setParameter('knight.quest', 'Define all the dependencies!')
+             .setParameter('sword.factory', function(){
+
+                //notice how we use an factory method to add some extra
+                //logic after instantiation
+                var sword = new Sword('Excalibur');
+
+                sword.fastenGrip();
+                sword.sharpenBlade();
+                return sword;
+             });
+
+    // alas we can now safely request our castle instance
+    var castle = container.get('castle_fret');
+
+    //as proof that the objects are full initialized:
+    console.log( castle.knight.name) // -&gt; 'Sir Freight'
+    console.log( castle.knight.attributes.dexterity) // -&gt; 100
+    console.log( castle.knight.sword.name) // -&gt; 'Excalibur'
+    console.log( castle.knight.sword.sharpened) // -&gt; true
+    console.log( castle.towers[1].height) // -&gt; '30'
+</code></pre>
+
+<h2 id="further-documentation">Further Documentation</h2>
 
 <p>We currently have the following documentation:</p>
 
