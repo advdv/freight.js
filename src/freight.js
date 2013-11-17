@@ -24,12 +24,6 @@ var Freight = function() {
   self._parameters = {};
 
   /**
-   * Contains the shared service instances
-   * @type {Object}
-   */
-  self._shared = {};
-
-  /**
    * Get and service of parameter from the container
    *
    * @method getService()

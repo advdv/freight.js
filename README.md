@@ -90,7 +90,7 @@ We use the following to configure our services:
     "shared": true,
     "constructorFn": ":knight.class",
 
-    //arguments can also include option hashes, ids will be resolved on level deep
+    //arguments can also include option hashes, ids will be resolved one level deep
     "arguments": ["Sir Freight", ":sword", {
       "strength": 40,
       "dexterity": 100,
@@ -105,7 +105,7 @@ We use the following to configure our services:
     "factoryFn": ":sword.factory"
   },
 
-  //notice that the tower is not shared (so is the sword) which means ne instances are
+  //notice that the tower is not shared (so is the sword) which means that instances are
   //created on every retrieval from the container
   "tower": {
     "constructorFn": ":tower.class",
