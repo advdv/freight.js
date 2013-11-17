@@ -3,9 +3,8 @@ freight.js
 
 [![Build Status](https://travis-ci.org/advanderveer/freight.js.png)](https://travis-ci.org/advanderveer/freight.js)
 [![Dependency Status](https://david-dm.org/advanderveer/freight.js.png)](https://david-dm.org/advanderveer/freight.js)
-[![Coverage Status](https://coveralls.io/repos/advanderveer/freight.js/badge.png)](https://coveralls.io/r/advanderveer/freight.js)
 
-An simple CommonJS dependency injection container for both node.js and the browser (using browserify). Loosely based on [pimple](http://pimple.sensiolabs.org/) but with: JSON configuration, service tagging and a perculiar javascript sauce.
+An simple CommonJS dependency injection container for both node.js and the browser (using browserify). Loosely based on the [Symfony2 DependencyInjection component](https://github.com/symfony/DependencyInjection) but more minimal. Features include: JSON configuration, service tagging and a perculiar javascript sauce.
 
 Goals
 ---------

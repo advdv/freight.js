@@ -2,7 +2,8 @@
   "castle_fret": {
     "shared": true,
     "constructorFn": ":castle.class",
-    "arguments": [":sir_freight", [":tower", ":tower", [":tower", ":tower"]]]
+    "arguments": [":sir_freight", [":tower", ":tower", [":tower", ":tower"]]],
+    "tags": ["inanimate", "building"]
   },
 
   "sir_freight": {
@@ -17,12 +18,14 @@
   },
 
   "sword": {
-    "factoryFn": ":sword.factory"
+    "factoryFn": ":sword.factory",
+    "tags": ["inanimate"]
   },
 
   "tower": {
     "constructorFn": ":tower.class",
-    "arguments": [":tower.height"]
+    "arguments": [":tower.height"],
+    "tags": ["inanimate", "building"]
   }
 
 }

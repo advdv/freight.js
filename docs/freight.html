@@ -71,6 +71,43 @@
       <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Parameter &quot;&#39;</span><span class="o">+</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;&quot; not found.&#39;</span><span class="p">);</span>
 
     <span class="k">return</span> <span class="nx">res</span><span class="p">;</span>
+  <span class="p">};</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'>Method findTaggedServiceIds()</span></p>
+
+<p>Return an array of service ids from services with the given tag</p>
+
+<p>Parameters:</p>
+
+<ul>
+<li><strong>tag must be a string.</strong></li>
+</ul>
+
+<p><strong>Returns an Array</strong></p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">findTaggedServiceIds</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">findTaggedServiceIds</span><span class="p">(</span><span class="nx">tag</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">res</span> <span class="o">=</span> <span class="p">[];</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">_definitions</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">tags</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">tag</span><span class="p">)</span> <span class="o">!==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">res</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+    <span class="k">return</span> <span class="nx">res</span><span class="p">;</span>
+  <span class="p">};</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'>Method getDefinition()</span></p>
+
+<p>Return a service definition from the container</p>
+
+<p>Parameters:</p>
+
+<ul>
+<li><strong>id must be a string.</strong></li>
+</ul>
+
+<p><strong>Returns a Definition</strong></p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">getDefinition</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">getDefinition</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">def</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
+    <span class="nx">self</span><span class="p">.</span><span class="nx">_definitions</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">){</span>
+      <span class="k">if</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">id</span> <span class="o">==</span> <span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">def</span> <span class="o">=</span> <span class="nx">d</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="k">return</span> <span class="nx">def</span><span class="p">;</span>
   <span class="p">};</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'>Method getService()</span></p>
 
 <p>Return an service by its id</p>
@@ -81,31 +118,14 @@
 <li><strong>id must be a string.</strong></li>
 </ul>
 
-<p><strong>Returns a mixed</strong></p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">getService</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">getService</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
-    
-    <span class="k">if</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">_shared</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">_shared</span><span class="p">[</span><span class="nx">id</span><span class="p">];</span>
-    <span class="p">}</span>
-
-    <span class="kd">var</span> <span class="nx">def</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-    <span class="nx">self</span><span class="p">.</span><span class="nx">_definitions</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">d</span><span class="p">){</span>
-      <span class="k">if</span><span class="p">(</span><span class="nx">d</span><span class="p">.</span><span class="nx">id</span> <span class="o">==</span> <span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">def</span> <span class="o">=</span> <span class="nx">d</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="p">});</span>
+<p><strong>Returns a mixed</strong></p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">getService</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">getService</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>  
+    <span class="kd">var</span> <span class="nx">def</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">getDefinition</span><span class="p">(</span><span class="nx">id</span><span class="p">);</span>
 
     <span class="k">if</span><span class="p">(</span><span class="nx">def</span> <span class="o">===</span> <span class="kc">false</span><span class="p">)</span>
       <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Service &quot;&#39;</span><span class="o">+</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;&quot; not found.&#39;</span><span class="p">);</span>
 
-    <span class="kd">var</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">def</span><span class="p">.</span><span class="nx">fn</span><span class="p">();</span>
-    <span class="k">if</span><span class="p">(</span><span class="nx">service</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="o">+</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;&quot; service returned &quot;&#39;</span><span class="o">+</span><span class="kc">undefined</span><span class="o">+</span><span class="s1">&#39;&quot; on instantiation.&#39;</span><span class="p">);</span>
-    <span class="p">}</span>
+    <span class="kd">var</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">def</span><span class="p">.</span><span class="nx">retrieve</span><span class="p">();</span>
 
-    <span class="k">if</span><span class="p">(</span><span class="nx">def</span><span class="p">.</span><span class="nx">shared</span> <span class="o">===</span> <span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
-      <span class="nx">self</span><span class="p">.</span><span class="nx">_shared</span><span class="p">[</span><span class="nx">id</span><span class="p">]</span> <span class="o">=</span> <span class="nx">service</span><span class="p">;</span>
-    <span class="p">}</span>
-    
     <span class="k">return</span> <span class="nx">service</span><span class="p">;</span>
   <span class="p">};</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'>Method register()</span></p>
 

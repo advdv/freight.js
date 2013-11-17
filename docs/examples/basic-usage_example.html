@@ -29,19 +29,21 @@
         <span class="p">};</span>
       <span class="p">};</span>
 
-
-
       <span class="kd">var</span> <span class="nx">services</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;castle_fret&quot;</span><span class="o">:</span> <span class="p">{</span>
+          <span class="s2">&quot;shared&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
           <span class="s2">&quot;constructorFn&quot;</span><span class="o">:</span> <span class="s2">&quot;:castle.class&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;arguments&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;:sir_freight&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;:tower&#39;</span><span class="p">,</span> <span class="s1">&#39;:tower&#39;</span><span class="p">,</span> <span class="s1">&#39;:tower&#39;</span><span class="p">]]</span>
+          <span class="s2">&quot;arguments&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;:sir_freight&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;:tower&quot;</span><span class="p">,</span> <span class="s2">&quot;:tower&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;:tower&quot;</span><span class="p">,</span> <span class="s2">&quot;:tower&quot;</span><span class="p">]]]</span>
         <span class="p">},</span>
 
         <span class="s2">&quot;sir_freight&quot;</span><span class="o">:</span> <span class="p">{</span>
+          <span class="s2">&quot;shared&quot;</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
           <span class="s2">&quot;constructorFn&quot;</span><span class="o">:</span> <span class="s2">&quot;:knight.class&quot;</span><span class="p">,</span>
           <span class="s2">&quot;arguments&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;Sir Freight&quot;</span><span class="p">,</span> <span class="s2">&quot;:sword&quot;</span><span class="p">,</span> <span class="p">{</span>
-            <span class="s1">&#39;strength&#39;</span><span class="o">:</span> <span class="mi">40</span><span class="p">,</span>
-            <span class="s1">&#39;dexterity&#39;</span><span class="o">:</span> <span class="mi">100</span>
+            <span class="s2">&quot;strength&quot;</span><span class="o">:</span> <span class="mi">40</span><span class="p">,</span>
+            <span class="s2">&quot;dexterity&quot;</span><span class="o">:</span> <span class="mi">100</span><span class="p">,</span>
+            <span class="s2">&quot;quest&quot;</span><span class="o">:</span> <span class="s2">&quot;:knight.quest&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;tower&quot;</span><span class="o">:</span> <span class="s2">&quot;:tower&quot;</span>
           <span class="p">}]</span>
         <span class="p">},</span>
 
@@ -51,37 +53,40 @@
 
         <span class="s2">&quot;tower&quot;</span><span class="o">:</span> <span class="p">{</span>
           <span class="s2">&quot;constructorFn&quot;</span><span class="o">:</span> <span class="s2">&quot;:tower.class&quot;</span><span class="p">,</span>
-          <span class="s2">&quot;arguments&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;:tower.height&#39;</span><span class="p">]</span>
+          <span class="s2">&quot;arguments&quot;</span><span class="o">:</span> <span class="p">[</span><span class="s2">&quot;:tower.height&quot;</span><span class="p">]</span>
         <span class="p">}</span>
 
-      <span class="p">};</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>var container = new Freight(); <br />
-container.registerAll(services);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>container.setParameter('castle.class', Castle)
-         .setParameter('tower.class', Tower)
-         .setParameter('tower.height', 30)
-         .setParameter('knight.class', Knight)
-         .setParameter('sword.factory', function(){
-            var sword = new Sword('Excalibur');</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><pre><code>        sword.fastenGrip();
-        sword.sharpenBlade();
-        return sword;
-     });
-</code></pre></div></div><div class="code"><div class="wrapper">      <span class="c1">//todo: call get twice /shared service?</span></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>var castle = container.get('castle_fret');</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>castle.knight.name.should.equal('Sir Freight');
-//castle.knight.attributes.dexterity.should.equal(100);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>castle.knight.sword.name.should.equal('Excalibur');
-castle.knight.sword.sharpened.should.equal(true);
-castle.knight.sword.fastened.should.equal(true);</p></div></div></div><div class="segment"><div class="comments "><div class="wrapper"><p>castle.towers.length.should.equal(3);</p></div></div><div class="code"><div class="wrapper">       <span class="c1">//castle.towers[1].height.should.equal(30);</span>
+      <span class="p">};</span>
+
+      <span class="kd">var</span> <span class="nx">container</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Freight</span><span class="p">();</span>      
+      <span class="nx">container</span><span class="p">.</span><span class="nx">registerAll</span><span class="p">(</span><span class="nx">services</span><span class="p">);</span>
+
+      <span class="nx">container</span><span class="p">.</span><span class="nx">setParameter</span><span class="p">(</span><span class="s1">&#39;castle.class&#39;</span><span class="p">,</span> <span class="nx">Castle</span><span class="p">)</span>
+               <span class="p">.</span><span class="nx">setParameter</span><span class="p">(</span><span class="s1">&#39;tower.class&#39;</span><span class="p">,</span> <span class="nx">Tower</span><span class="p">)</span>
+               <span class="p">.</span><span class="nx">setParameter</span><span class="p">(</span><span class="s1">&#39;tower.height&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+               <span class="p">.</span><span class="nx">setParameter</span><span class="p">(</span><span class="s1">&#39;knight.class&#39;</span><span class="p">,</span> <span class="nx">Knight</span><span class="p">)</span>
+               <span class="p">.</span><span class="nx">setParameter</span><span class="p">(</span><span class="s1">&#39;knight.quest&#39;</span><span class="p">,</span> <span class="s1">&#39;Define all the dependencies!&#39;</span><span class="p">)</span>
+               <span class="p">.</span><span class="nx">setParameter</span><span class="p">(</span><span class="s1">&#39;sword.factory&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+                  <span class="kd">var</span> <span class="nx">sword</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Sword</span><span class="p">(</span><span class="s1">&#39;Excalibur&#39;</span><span class="p">);</span>
+
+                  <span class="nx">sword</span><span class="p">.</span><span class="nx">fastenGrip</span><span class="p">();</span>
+                  <span class="nx">sword</span><span class="p">.</span><span class="nx">sharpenBlade</span><span class="p">();</span>
+                  <span class="k">return</span> <span class="nx">sword</span><span class="p">;</span>
+               <span class="p">});</span>
+
+       <span class="kd">var</span> <span class="nx">castle</span> <span class="o">=</span> <span class="nx">container</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;castle_fret&#39;</span><span class="p">);</span>
+
+       <span class="nx">castle</span><span class="p">.</span><span class="nx">knight</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;Sir Freight&#39;</span><span class="p">);</span>
+       <span class="nx">castle</span><span class="p">.</span><span class="nx">knight</span><span class="p">.</span><span class="nx">attributes</span><span class="p">.</span><span class="nx">dexterity</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+
+       <span class="nx">castle</span><span class="p">.</span><span class="nx">knight</span><span class="p">.</span><span class="nx">sword</span><span class="p">.</span><span class="nx">name</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="s1">&#39;Excalibur&#39;</span><span class="p">);</span>
+       <span class="nx">castle</span><span class="p">.</span><span class="nx">knight</span><span class="p">.</span><span class="nx">sword</span><span class="p">.</span><span class="nx">sharpened</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+       <span class="nx">castle</span><span class="p">.</span><span class="nx">knight</span><span class="p">.</span><span class="nx">sword</span><span class="p">.</span><span class="nx">fastened</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
+
+       <span class="nx">castle</span><span class="p">.</span><span class="nx">towers</span><span class="p">[</span><span class="mi">1</span><span class="p">].</span><span class="nx">height</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">equal</span><span class="p">(</span><span class="mi">30</span><span class="p">);</span>
 
 
     <span class="p">});</span>
 
-  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;Setting a parameter&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-
-
-
-    <span class="p">});</span>
-
-  <span class="nx">it</span><span class="p">(</span><span class="s1">&#39;Defining a parameter&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-
-
-
-    <span class="p">});</span>
 
 <span class="p">});</span></div></div></div></div></body></html>

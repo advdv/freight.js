@@ -100,6 +100,10 @@ describe('Freight', function(){
         new Definition('invalid5', invalidConfig.invalid5, f); //arguments not as array
       }).should.throw();
 
+      (function(){
+        new Definition('invalid6', invalidConfig.invalid6, f); //tags not as array
+      }).should.throw();
+
     });
 
 
@@ -114,6 +118,24 @@ describe('Freight', function(){
     });
 
   });
+
+  describe('#addTag()', function(){
+
+    it("should increase length and return definition", function(){
+      var def = new Definition('engine', carsConfig.engine, f);
+
+      def.tags.length.should.equal(1);
+
+      def.addTag('part');
+      def.addTag('part');
+      def.addTag('metal');
+      def.tags.length.should.equal(3);
+
+
+    });
+
+  });
+
 
   describe('#addArgument()', function(){
 

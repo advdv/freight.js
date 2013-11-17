@@ -18,7 +18,12 @@
 	"invalid5": {
 		"constructorFn": ":Car",
 		"shared": "a"
+	},
+	"invalid6": {
+		"constructorFn": ":Car",
+		"tags": "a"
 	}
+
 
 
 }

@@ -36,19 +36,21 @@ describe('Basic Usage', function(){
         };
       };
 
-
-
       var services = {
         "castle_fret": {
+          "shared": true,
           "constructorFn": ":castle.class",
-          "arguments": [":sir_freight", [':tower', ':tower', ':tower']]
+          "arguments": [":sir_freight", [":tower", ":tower", [":tower", ":tower"]]]
         },
 
         "sir_freight": {
+          "shared": true,
           "constructorFn": ":knight.class",
           "arguments": ["Sir Freight", ":sword", {
-            'strength': 40,
-            'dexterity': 100
+            "strength": 40,
+            "dexterity": 100,
+            "quest": ":knight.quest",
+            "tower": ":tower"
           }]
         },
 
@@ -58,54 +60,40 @@ describe('Basic Usage', function(){
 
         "tower": {
           "constructorFn": ":tower.class",
-          "arguments": [':tower.height']
+          "arguments": [":tower.height"]
         }
 
       };
 
-      // var container = new Freight();      
-      // container.registerAll(services);
+      var container = new Freight();      
+      container.registerAll(services);
 
-      // container.setParameter('castle.class', Castle)
-      //          .setParameter('tower.class', Tower)
-      //          .setParameter('tower.height', 30)
-      //          .setParameter('knight.class', Knight)
-      //          .setParameter('sword.factory', function(){
-      //             var sword = new Sword('Excalibur');
+      container.setParameter('castle.class', Castle)
+               .setParameter('tower.class', Tower)
+               .setParameter('tower.height', 30)
+               .setParameter('knight.class', Knight)
+               .setParameter('knight.quest', 'Define all the dependencies!')
+               .setParameter('sword.factory', function(){
+                  var sword = new Sword('Excalibur');
 
-      //             sword.fastenGrip();
-      //             sword.sharpenBlade();
-      //             return sword;
-      //          });
+                  sword.fastenGrip();
+                  sword.sharpenBlade();
+                  return sword;
+               });
 
+       var castle = container.get('castle_fret');
 
-      //todo: call get twice /shared service?
+       castle.knight.name.should.equal('Sir Freight');
+       castle.knight.attributes.dexterity.should.equal(100);
 
-       // var castle = container.get('castle_fret');
+       castle.knight.sword.name.should.equal('Excalibur');
+       castle.knight.sword.sharpened.should.equal(true);
+       castle.knight.sword.fastened.should.equal(true);
 
-       // castle.knight.name.should.equal('Sir Freight');
-       // //castle.knight.attributes.dexterity.should.equal(100);
-
-       // castle.knight.sword.name.should.equal('Excalibur');
-       // castle.knight.sword.sharpened.should.equal(true);
-       // castle.knight.sword.fastened.should.equal(true);
-
-       // castle.towers.length.should.equal(3);
-       //castle.towers[1].height.should.equal(30);
+       castle.towers[1].height.should.equal(30);
 
 
     });
 
-  it('Setting a parameter', function(){
-
-
-
-    });
-
-  it('Defining a parameter', function(){
-
-
-
-    });
 
 });

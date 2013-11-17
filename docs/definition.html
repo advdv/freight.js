@@ -7,7 +7,28 @@
 
 <p>The arguments that will be send to the callable when called, order matters</p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">args</span> <span class="o">=</span> <span class="p">[];</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> </span></p>
 
-<p>Indicate wether the service behaves like a singleton; returning the same instance on repeated requests</p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">shared</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'>Method addArgument</span></p>
+<p>The tags that the service will receive</p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">tags</span> <span class="o">=</span> <span class="p">[];</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> </span></p>
+
+<p>Contains the last created instance of the service, this is reused when the service is a shared service</p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">service</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'> </span></p>
+
+<p>Indicate wether the service behaves like a singleton; returning the same instance on repeated requests</p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">shared</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'>Method retrieve()</span></p>
+
+<p>Create an instance from this definition</p>
+
+<p><strong>Returns a mixed</strong></p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">retrieve</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">retrieve</span><span class="p">()</span> <span class="p">{</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">shared</span> <span class="o">===</span> <span class="kc">true</span> <span class="o">&amp;&amp;</span> <span class="nx">self</span><span class="p">.</span><span class="nx">service</span> <span class="o">!==</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">self</span><span class="p">.</span><span class="nx">service</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kd">var</span> <span class="nx">service</span> <span class="o">=</span> <span class="nx">self</span><span class="p">.</span><span class="nx">fn</span><span class="p">();</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">service</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="o">+</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;&quot; service returned &quot;&#39;</span><span class="o">+</span><span class="kc">undefined</span><span class="o">+</span><span class="s1">&#39;&quot; on instantiation.&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="nx">self</span><span class="p">.</span><span class="nx">service</span> <span class="o">=</span> <span class="nx">service</span><span class="p">;</span>
+    <span class="k">return</span> <span class="nx">service</span><span class="p">;</span>
+  <span class="p">};</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'>Method addArgument</span></p>
 
 <p>Add an argument (at the end) to the definition</p>
 
@@ -17,6 +38,19 @@
 <li><strong>arg must be a mixed.</strong></li>
 </ul></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">addArgument</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">addArgument</span><span class="p">(</span><span class="nx">arg</span><span class="p">)</span> <span class="p">{</span>
     <span class="nx">self</span><span class="p">.</span><span class="nx">args</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">arg</span><span class="p">);</span>
+    <span class="k">return</span> <span class="nx">self</span><span class="p">;</span>
+  <span class="p">};</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'>Method addTag()</span></p>
+
+<p>Tag the service</p>
+
+<p>Parameters:</p>
+
+<ul>
+<li><strong>tag must be a string.</strong></li>
+</ul></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">addTag</span> <span class="o">=</span> <span class="kd">function</span> <span class="nx">addTag</span><span class="p">(</span><span class="nx">tag</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">self</span><span class="p">.</span><span class="nx">tags</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">tag</span><span class="p">)</span> <span class="o">===</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+      <span class="nx">self</span><span class="p">.</span><span class="nx">tags</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="nx">tag</span><span class="p">);</span>
+
     <span class="k">return</span> <span class="nx">self</span><span class="p">;</span>
   <span class="p">};</span></div></div></div><div class="segment"><div class="comments doc-section"><div class="wrapper"><p><span class='doc-section-header'></span></p>
 
@@ -103,6 +137,7 @@
 
 <p><strong>Returns a Definition</strong></p></div></div><div class="code"><div class="wrapper">  <span class="nx">self</span><span class="p">.</span><span class="nx">configure</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">conf</span><span class="p">)</span> <span class="p">{</span>
 
+    <span class="c1">//shared</span>
     <span class="k">if</span><span class="p">(</span><span class="nx">conf</span><span class="p">.</span><span class="nx">shared</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
         <span class="k">if</span><span class="p">(</span><span class="nb">String</span><span class="p">(</span><span class="nx">conf</span><span class="p">.</span><span class="nx">shared</span><span class="p">).</span><span class="nx">toLowerCase</span><span class="p">()</span> <span class="o">===</span> <span class="s1">&#39;true&#39;</span><span class="p">)</span> <span class="p">{</span>
           <span class="nx">self</span><span class="p">.</span><span class="nx">shared</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
@@ -113,7 +148,7 @@
         <span class="p">}</span>
     <span class="p">}</span>
 
-    <span class="c1">//get some way to construct</span>
+    <span class="c1">//constructing</span>
     <span class="kd">var</span> <span class="nx">fnParam</span> <span class="o">=</span> <span class="nx">conf</span><span class="p">.</span><span class="nx">constructorFn</span><span class="p">;</span>
     <span class="kd">var</span> <span class="nx">type</span> <span class="o">=</span> <span class="s1">&#39;c&#39;</span><span class="p">;</span>
     <span class="k">if</span><span class="p">(</span><span class="nx">fnParam</span> <span class="o">===</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
@@ -141,6 +176,19 @@
 
       <span class="nx">args</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">arg</span><span class="p">){</span>
         <span class="nx">self</span><span class="p">.</span><span class="nx">addArgument</span><span class="p">(</span><span class="nx">arg</span><span class="p">);</span>
+      <span class="p">});</span>
+
+    <span class="p">}</span>
+
+    <span class="c1">//tags</span>
+    <span class="kd">var</span> <span class="nx">tags</span> <span class="o">=</span> <span class="nx">conf</span><span class="p">.</span><span class="nx">tags</span><span class="p">;</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">tags</span> <span class="o">!==</span> <span class="kc">undefined</span><span class="p">)</span> <span class="p">{</span>
+
+      <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">tags</span><span class="p">))</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s1">&#39;Service tags of &quot;&#39;</span><span class="o">+</span><span class="nx">self</span><span class="p">.</span><span class="nx">id</span><span class="o">+</span><span class="s1">&#39;&quot; should be specified as an array - received: &quot;&#39;</span><span class="o">+</span><span class="nx">tags</span><span class="o">+</span><span class="s1">&#39;&quot;&#39;</span><span class="p">);</span>
+
+      <span class="nx">tags</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">tag</span><span class="p">){</span>
+        <span class="nx">self</span><span class="p">.</span><span class="nx">addTag</span><span class="p">(</span><span class="nx">tag</span><span class="p">);</span>
       <span class="p">});</span>
 
     <span class="p">}</span>

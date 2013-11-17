@@ -2,6 +2,7 @@ var Freight = require('./../src/freight.js');
 var Definition = require('./../src/definition.js');
 
 var carsConfig = require('./examples/cars.json');
+var castleConfig = require('./examples/castle.json');
 
 describe('Freight', function(){
 
@@ -136,6 +137,22 @@ describe('Freight', function(){
 
   });
 
+  describe('#findTaggedServiceIds()', function(){
+    
+    it("Return tagged service ids", function(){
+      f.registerAll(castleConfig);
+
+      var ids = f.findTaggedServiceIds('inanimate');
+      ids.length.should.equal(3);
+      ids[0].should.equal('castle_fret');
+
+      ids = f.findTaggedServiceIds('building');
+      ids.length.should.equal(2);
+
+    });
+
+  });
+
 
   describe('#get()', function(){
 
@@ -145,7 +162,9 @@ describe('Freight', function(){
       f.setParameter('engine_factory', function(){return {};});
       f.setParameter('wheels_class', function(){});
 
-      (typeof f.get('car')).should.equal('object');
+      var car = f.get('car');
+      (typeof car).should.equal('object');
+      f.getDefinition('car').service.should.equal(car);
 
       f.setParameter('car', 'hey');    
       f.get('car').should.equal('hey');

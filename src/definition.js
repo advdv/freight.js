@@ -20,10 +20,43 @@ var Definition = function Definition(id, conf, container) {
   self.args = [];
 
   /**
+   * The tags that the service will receive
+   * @type {Array}
+   */
+  self.tags = [];
+
+  /**
+   * Contains the last created instance of the service, this is reused when the service is a shared service
+   * @type {Boolean}
+   */
+  self.service = false;
+
+  /**
    * Indicate wether the service behaves like a singleton; returning the same instance on repeated requests
    * @type {Boolean}
    */
   self.shared = false;
+
+  /**
+   * Create an instance from this definition
+   * 
+   * @method retrieve()
+   * @return {mixed}
+   */
+  self.retrieve = function retrieve() {
+
+    if(self.shared === true && self.service !== false) {
+      return self.service;
+    }
+
+    var service = self.fn();
+    if(service === undefined) {
+      throw new Error('"'+id+'" service returned "'+undefined+'" on instantiation.');
+    }
+
+    self.service = service;
+    return service;
+  };
 
   /**
    * Add an argument (at the end) to the definition
@@ -34,6 +67,20 @@ var Definition = function Definition(id, conf, container) {
    */
   self.addArgument = function addArgument(arg) {
     self.args.push(arg);
+    return self;
+  };
+
+  /**
+   * Tag the service
+   *
+   * @method addTag()
+   * @param {string} tag
+   * @chainable
+   */
+  self.addTag = function addTag(tag) {
+    if(self.tags.indexOf(tag) === -1)
+      self.tags.push(tag);
+
     return self;
   };
 
@@ -120,6 +167,7 @@ var Definition = function Definition(id, conf, container) {
    */
   self.configure = function(conf) {
 
+    //shared
     if(conf.shared !== undefined) {
         if(String(conf.shared).toLowerCase() === 'true') {
           self.shared = true;
@@ -130,7 +178,7 @@ var Definition = function Definition(id, conf, container) {
         }
     }
 
-    //get some way to construct
+    //constructing
     var fnParam = conf.constructorFn;
     var type = 'c';
     if(fnParam === undefined) {
@@ -158,6 +206,19 @@ var Definition = function Definition(id, conf, container) {
 
       args.forEach(function(arg){
         self.addArgument(arg);
+      });
+
+    }
+
+    //tags
+    var tags = conf.tags;
+    if(tags !== undefined) {
+
+      if(!Array.isArray(tags))
+        throw new Error('Service tags of "'+self.id+'" should be specified as an array - received: "'+tags+'"');
+
+      tags.forEach(function(tag){
+        self.addTag(tag);
       });
 
     }

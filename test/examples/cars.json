@@ -6,13 +6,12 @@
 	},
 	"engine": {
 		"shared": "true",
-		"factoryFn": ":engine_factory"
-
-
+		"factoryFn": ":engine_factory",
+		"tags": ["interior"]
 	},
 	"wheels": {
-		"constructorFn": ":wheels_class"
-
+		"constructorFn": ":wheels_class",
+		"tags": ["exterior"]
 	}
 
 }

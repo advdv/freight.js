@@ -87,18 +87,30 @@ var Freight = function() {
   };
 
   /**
-   * Return an service by its id
+   * Return an array of service ids from services with the given tag
    *
-   * @method getService()
-   * @param  {string} id
-   * @return {mixed}
+   * @method findTaggedServiceIds()
+   * @param  {string} tag
+   * @return {Array}
    */
-  self.getService = function getService(id) {
-    
-    if(self._shared[id] !== undefined) {
-      return self._shared[id];
-    }
+  self.findTaggedServiceIds = function findTaggedServiceIds(tag) {
+    var res = [];
+    self._definitions.forEach(function(d){
+      if(d.tags.indexOf(tag) !== -1) {
+        res.push(d.id);
+      }
+    });
+    return res;
+  };
 
+  /**
+   * Return a service definition from the container
+   *
+   * @method getDefinition()
+   * @param  {string} id
+   * @return {Definition}
+   */
+  self.getDefinition = function getDefinition(id) {
     var def = false;
     self._definitions.forEach(function(d){
       if(d.id == id) {
@@ -106,18 +118,24 @@ var Freight = function() {
       }
     });
 
+    return def;
+  };
+
+  /**
+   * Return an service by its id
+   *
+   * @method getService()
+   * @param  {string} id
+   * @return {mixed}
+   */
+  self.getService = function getService(id) {  
+    var def = self.getDefinition(id);
+
     if(def === false)
       throw new Error('Service "'+id+'" not found.');
 
-    var service = def.fn();
-    if(service === undefined) {
-      throw new Error('"'+id+'" service returned "'+undefined+'" on instantiation.');
-    }
+    var service = def.retrieve();
 
-    if(def.shared === true) {
-      self._shared[id] = service;
-    }
-    
     return service;
   };
 
