@@ -41,10 +41,10 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
           "ignorePrefix": "}",
           "name": "JavaScript"
         },
-        "sourcePath": "/Users/advanderveer/Documents/Personal/Javascript/station.js/freight.js/test/examples/create-services_example.js",
-        "projectPath": "test/examples/create-services_example.js",
-        "targetPath": "create-services_example",
-        "title": "create-services_example"
+        "sourcePath": "/Users/advanderveer/Documents/Personal/Javascript/station.js/freight.js/test/examples/basic-usage_example.js",
+        "projectPath": "test/examples/basic-usage_example.js",
+        "targetPath": "basic-usage_example",
+        "title": "basic-usage_example"
       },
       "depth": 1,
       "outline": [
@@ -55,18 +55,7 @@ f.event={add:function(a,c,d,e,g){var h,i,j,k,l,m,n,o,p,q,r,s;if(!(a.nodeType===3
             "title": "Creating services",
             "slug": "creating-services"
           },
-          "depth": 1,
-          "children": [
-            {
-              "type": "heading",
-              "data": {
-                "level": 3,
-                "title": "Building a container",
-                "slug": "building-a-container"
-              },
-              "depth": 3
-            }
-          ]
+          "depth": 1
         }
       ]
     }
