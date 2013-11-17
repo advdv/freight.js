@@ -3,6 +3,7 @@ freight.js
 
 [![Build Status](https://travis-ci.org/advanderveer/freight.js.png)](https://travis-ci.org/advanderveer/freight.js)
 [![Dependency Status](https://david-dm.org/advanderveer/freight.js.png)](https://david-dm.org/advanderveer/freight.js)
+[![NPM version](https://badge.fury.io/js/freight.js.png)](http://badge.fury.io/js/freight.js)
 
 An simple CommonJS dependency injection container for both node.js and the browser (using browserify). Loosely based on the [Symfony2 DependencyInjection component](https://github.com/symfony/DependencyInjection) but more minimal. Features include: JSON configuration, service tagging and a perculiar javascript sauce.
 
