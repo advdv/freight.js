@@ -1,3 +1,4 @@
+/* globals window */
 var Freight = require('./../src/freight.js');
 var Definition = require('./../src/definition.js');
 
@@ -16,6 +17,7 @@ describe('Freight', function(){
 
     it('should initialize members', function(){
       f.should.be.an.instanceOf(Freight);
+
     });
 
   });

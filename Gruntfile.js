@@ -6,6 +6,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-gh-pages');
+  grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-shell');
 
   // Project configuration.
@@ -19,6 +20,14 @@ module.exports = function(grunt) {
           require: ['should', 'sinon']
         },
         src: ['test/**/*.js']
+      }
+    },
+
+    /* browser tests */
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js',
+        background: true
       }
     },
 
@@ -42,7 +51,7 @@ module.exports = function(grunt) {
     watch: {
       dev: {
         files: ['src/**/*.js', 'test/**/*.js', 'test/**/*.json'],
-        tasks: ['test']
+        tasks: ['browserify','test', 'karma:unit:run']
       },
     },
 
@@ -60,6 +69,12 @@ module.exports = function(grunt) {
       dev: {
         files: {
           'build/freight.js': ['index.js'],
+        }
+      },
+      tests: {
+        files: {
+          'build/test/f_test.js': ['test/freight_test.js'],
+          'build/test/d_test.js': ['test/definition_test.js']
         }
       }
     },
@@ -88,7 +103,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('default', ['test', 'build']);
 
-  grunt.registerTask('start', ['watch']);
+  grunt.registerTask('start', ['karma:unit','watch']);
   grunt.registerTask('test', ['jshint', 'mochaTest', 'shell:coverage', 'shell:documentation']);
   grunt.registerTask('build', ['jshint', 'browserify', 'uglify', 'shell:coverage', 'shell:documentation']);
   grunt.registerTask('deploy', ['test', 'build', 'gh-pages']);
