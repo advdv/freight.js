@@ -122,10 +122,14 @@ var Definition = function Definition(id, conf, container) {
 
     var getCheckCallable = function(p) {
       var fn = false;
-      try {
-        fn = container.getParameter(p.replace(container.idPrefix, ''));
-      } catch(e) {
-        throw new Error('Whene trying to instanciate service "'+self.id+'", the parameter specifying the '+((type == 'f') ? ('factory') : ('constructor'))+': "'+fnParam+'" did not exist.');
+      if(typeof p === 'function') {
+        fn = p;
+      } else {
+        try {
+          fn = container.getParameter(p.replace(container.idPrefix, ''));
+        } catch(e) {
+          throw new Error('Whene trying to instanciate service "'+self.id+'", the parameter specifying the '+((type == 'f') ? ('factory') : ('constructor'))+': "'+fnParam+'" did not exist.');
+        }
       }
       
       if(typeof fn !== 'function') {
@@ -191,7 +195,7 @@ var Definition = function Definition(id, conf, container) {
     if(fnParam === undefined)
       throw new Error('Configuration of "'+self.id+'" must either specify an constructor or an factory function - received: "'+conf+'"');
 
-    if(container.isId(fnParam) === false) {
+    if(container.isId(fnParam) === false && typeof fnParam !== 'function') {
       throw new Error('Constructor or an factory function of "'+self.id+'" should be specified using a parameter id - received: "'+fnParam+'"');
     }
 

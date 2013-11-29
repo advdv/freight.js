@@ -44,6 +44,9 @@ module.exports = function(grunt) {
           'node_modules/groc/bin/groc "./src/**/*.js" --out=docs "./README.md"',
           'node_modules/groc/bin/groc "./test/examples/*.js" --out=docs/examples "./test/examples/index.md"'
         ].join(' && ')
+      },
+      deploy: {
+        command: 'npm publish'
       }
     },
 
@@ -106,6 +109,6 @@ module.exports = function(grunt) {
   grunt.registerTask('start', ['karma:unit','watch']);
   grunt.registerTask('test', ['jshint', 'mochaTest', 'shell:coverage', 'shell:documentation']);
   grunt.registerTask('build', ['jshint', 'browserify', 'uglify', 'shell:coverage', 'shell:documentation']);
-  grunt.registerTask('deploy', ['test', 'build', 'gh-pages']);
+  grunt.registerTask('deploy', ['test', 'build', 'gh-pages', 'shell:deploy']);
 
 };

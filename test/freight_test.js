@@ -1,4 +1,3 @@
-/* globals window */
 var Freight = require('./../src/freight.js');
 var Definition = require('./../src/definition.js');
 
@@ -87,6 +86,35 @@ describe('Freight', function(){
       
       f._definitions.length.should.equal(1);
       def.should.be.an.instanceOf(Definition);
+
+    });
+
+    it('should also work with functions as constructor/factory', function(){
+      var obj = {};
+      var factory = function() {
+        arguments[0].should.equal("a");
+        return obj;
+      };
+      var Bird = function() {
+        arguments[0].should.equal("b");
+        this.wings = '2 wings';
+      };
+
+      var def = f.register('truck', {
+        factoryFn: factory,
+        arguments: ["a"]
+      });
+
+      var res = f.get('truck');
+      res.should.equal(obj);
+
+      var def2 = f.register('bird', {
+        constructorFn: Bird,
+        arguments: ["b"]
+      });
+
+      var res2 = f.get('bird');
+      res2.wings.should.equal('2 wings');
 
     });
 

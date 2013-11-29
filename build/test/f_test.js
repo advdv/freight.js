@@ -123,10 +123,14 @@ var Definition = function Definition(id, conf, container) {
 
     var getCheckCallable = function(p) {
       var fn = false;
-      try {
-        fn = container.getParameter(p.replace(container.idPrefix, ''));
-      } catch(e) {
-        throw new Error('Whene trying to instanciate service "'+self.id+'", the parameter specifying the '+((type == 'f') ? ('factory') : ('constructor'))+': "'+fnParam+'" did not exist.');
+      if(typeof p === 'function') {
+        fn = p;
+      } else {
+        try {
+          fn = container.getParameter(p.replace(container.idPrefix, ''));
+        } catch(e) {
+          throw new Error('Whene trying to instanciate service "'+self.id+'", the parameter specifying the '+((type == 'f') ? ('factory') : ('constructor'))+': "'+fnParam+'" did not exist.');
+        }
       }
       
       if(typeof fn !== 'function') {
@@ -192,7 +196,7 @@ var Definition = function Definition(id, conf, container) {
     if(fnParam === undefined)
       throw new Error('Configuration of "'+self.id+'" must either specify an constructor or an factory function - received: "'+conf+'"');
 
-    if(container.isId(fnParam) === false) {
+    if(container.isId(fnParam) === false && typeof fnParam !== 'function') {
       throw new Error('Constructor or an factory function of "'+self.id+'" should be specified using a parameter id - received: "'+fnParam+'"');
     }
 
@@ -454,7 +458,6 @@ module.exports={
 
 }
 },{}],5:[function(require,module,exports){
-/* globals window */
 var Freight = require('./../src/freight.js');
 var Definition = require('./../src/definition.js');
 
@@ -543,6 +546,35 @@ describe('Freight', function(){
       
       f._definitions.length.should.equal(1);
       def.should.be.an.instanceOf(Definition);
+
+    });
+
+    it('should also work with functions as constructor/factory', function(){
+      var obj = {};
+      var factory = function() {
+        arguments[0].should.equal("a");
+        return obj;
+      };
+      var Bird = function() {
+        arguments[0].should.equal("b");
+        this.wings = '2 wings';
+      };
+
+      var def = f.register('truck', {
+        factoryFn: factory,
+        arguments: ["a"]
+      });
+
+      var res = f.get('truck');
+      res.should.equal(obj);
+
+      var def2 = f.register('bird', {
+        constructorFn: Bird,
+        arguments: ["b"]
+      });
+
+      var res2 = f.get('bird');
+      res2.wings.should.equal('2 wings');
 
     });
 
